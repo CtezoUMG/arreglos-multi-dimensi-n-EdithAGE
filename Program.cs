@@ -2,11 +2,28 @@ using System;
 
 // 1. Lectura de datos: Configurada para los Test Cases de GitHub
 string? linea1 = Console.ReadLine();
-if (string.IsNullOrEmpty(linea1)) return;
+if (string.IsNullOrWhiteSpace(linea1))
+{
+    // Si no hay primera línea, terminamos (útil para autograding)
+    return;
+}
 
-int n = int.Parse(linea1);
+if (!int.TryParse(linea1, out int n) || n <= 0)
+{
+    // n inválido: terminamos silenciosamente
+    return;
+}
+
 // Leemos la segunda línea y dividimos por espacios, eliminando vacíos
-string[] entrada = Console.ReadLine()?.Split(' ', StringSplitOptions.RemoveEmptyEntries) ?? Array.Empty<string>();
+string[] entrada = Console.ReadLine()?
+    .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+    ?? Array.Empty<string>();
+
+if (entrada.Length < n)
+{
+    // Evita IndexOutOfRange si vinieron menos números
+    return;
+}
 
 int[] numeros = new int[n];
 for (int i = 0; i < n; i++)
@@ -15,10 +32,8 @@ for (int i = 0; i < n; i++)
 }
 
 // --- INICIO DE LÓGICA DEL ALUMNO ---
-// Instrucción: El alumno debe encontrar el valor máximo del arreglo 'numeros'
-int maximo = numeros[0]; 
-
-// TODO: Implementar el algoritmo de búsqueda aquí
+// Buscar el valor máximo en el arreglo 'numeros'
+int maximo = numeros[0];
 for (int i = 1; i < n; i++)
 {
     if (numeros[i] > maximo)
@@ -29,4 +44,4 @@ for (int i = 1; i < n; i++)
 // --- FIN DE LÓGICA DEL ALUMNO ---
 
 // 2. Salida: Lo que el Autograding comparará
-Console.WriteLine(maximo);
+Console.WriteLine(maximo); // Comentario: solo texto como comentario, no después del ;
